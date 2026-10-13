@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Celine Varmann Aamodt — Interaksjonsdesigner</title>
+<meta name="description" content="Junior interaksjonsdesigner i Trondheim. Jeg lager orden i det som føles kaotisk.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   1. PALETTEN — dine seks farger
+   Dette laget er bare navn på farger. Ikke bruk disse direkte lenger nede;
+   bruk rollene i seksjon 2. Da kan du bytte en farge ett sted.
+   ========================================================================== */
+:root {
+  --marina:     #00408C;
+  --baby-blue:  #96ADD6;
+  --kisses:     #E85234;
+  --blushing:   #F9B8AF;
+  --vanilla:    #F2EEE9;
+  --sunburned:  #F2D7D3;
+
+  /* ========================================================================
+     2. ROLLER — hva hver farge gjør
+     Vil du at aksentfargen skal være Marina i stedet for Kisses?
+     Endre én linje her, så følger hele siden etter.
+     ====================================================================== */
+  --bg:          var(--vanilla);    /* sidebakgrunn                          */
+  --bg-tint:     var(--sunburned);  /* hover og rolige felt                  */
+  --text:        var(--marina);     /* all brødtekst — 8.6:1, godt lesbart   */
+  --text-soft:   color-mix(in srgb, var(--marina) 68%, var(--vanilla));
+                                     /* Marina, det "blå" laget — sekundærtekst */
+  --accent:      var(--kisses);     /* Kisses, det "røde" laget — kun spart bruk */
+  --tag-bg:      var(--blushing);   /* bakgrunn for tags/pills (rød sone)    */
+  --rule:        #D8CFC6;           /* hårfine linjer — nøytral, ikke tekst  */
+
+  --invert-bg:   var(--marina);     /* det mørke feltet midt på siden        */
+  --invert-text: var(--vanilla);
+  --loud-bg:     var(--kisses);     /* kontaktfeltet                         */
+  --loud-text:   var(--sunburned);  /* kun i displaystørrelse                */
+
+  /* ========================================================================
+     3. TYPOGRAFI OG MÅL
+     clamp(minimum, ønsket, maksimum) — teksten vokser med vinduet,
+     men blir aldri mindre enn det første eller større enn det siste tallet.
+     ====================================================================== */
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body:    "Instrument Sans", sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+
+  --size-xs:  0.75rem;
+  --size-s:   0.875rem;
+  --size-m:   clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --size-l:   clamp(1.35rem, 1.1rem + 1.1vw, 1.9rem);
+  --size-xl:  clamp(1.9rem, 1.1rem + 3.5vw, 3.8rem);
+
+  --max:     1160px;
+  --gutter:  clamp(1.25rem, 5vw, 4rem);
+  --measure: 58ch;
+}
+
+/* ==========================================================================
+   4. GRUNNSTIL
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--size-m);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   4b. SPRÅK — norsk/engelsk-bytte
+   Hver tospråklig bit av tekst ligger i to <span>: .lang-no og .lang-en.
+   Hvilken som vises styres av lang-attributtet på <html>.
+   ========================================================================== */
+.lang-en { display: none; }
+html[lang="en"] .lang-no { display: none; }
+html[lang="en"] .lang-en { display: inline; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin: 0 0 2.5rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ==========================================================================
+   5. TOPPEN
+   ========================================================================== */
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.masthead__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1rem;
+}
+.masthead__name {
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+  font-weight: 500;
+  text-decoration: none;
+}
+.masthead__nav {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2rem);
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.masthead__nav a {
+  text-decoration: none;
+  color: var(--text-soft);
+  transition: color 0.18s ease;
+}
+.masthead__nav a:hover { color: var(--accent); }
+
+.masthead__right {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+.lang-switch__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-soft);
+  flex-shrink: 0;
+  transition: color 0.18s ease;
+}
+.lang-switch__option {
+  letter-spacing: 0.06em;
+  color: var(--text-soft);
+  font-size: var(--size-xs);
+  font-weight: 500;
+  line-height: 1;
+  transition: font-size 0.18s ease, color 0.18s ease, font-weight 0.18s ease;
+}
+html[lang="no"] .lang-switch__option[data-lang="no"],
+html[lang="en"] .lang-switch__option[data-lang="en"] {
+  color: var(--text);
+  font-weight: 700;
+  font-size: var(--size-s);
+}
+.lang-switch:hover .lang-switch__option { color: var(--accent); }
+.lang-switch__divider {
+  width: 1px;
+  height: 11px;
+  background: var(--rule);
+}
+
+/* ==========================================================================
+   6. HERO — signaturmomentet
+   Overskriften er "målsatt" som i en designfil: en målelinje med endestreker
+   over et svakt kolonnegrid.
+   ========================================================================== */
+.hero {
+  position: relative;
+  padding-block: clamp(4rem, 12vh, 8.5rem) clamp(3.5rem, 9vh, 6rem);
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to right, var(--rule) 0 1px, transparent 1px 12.5%
+  );
+  opacity: 0.6;
+  pointer-events: none;
+}
+.hero__inner { position: relative; }
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 4.5rem);
+}
+.hero__portrait-wrap {
+  position: relative;
+  width: clamp(200px, 27vw, 340px);
+  aspect-ratio: 3 / 4;
+  justify-self: end;
+}
+.hero__portrait-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--marina);
+  border-radius: 4px;
+  transform: rotate(5deg);
+}
+.hero__portrait {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  transform: rotate(-3deg);
+  box-shadow:
+    0 26px 44px -18px color-mix(in srgb, var(--marina) 45%, transparent),
+    0 10px 18px -10px color-mix(in srgb, var(--marina) 35%, transparent);
+}
+.hero__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--size-xl);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  margin: 0;
+  max-width: 15ch;
+}
+.hero__title em { font-style: normal; color: var(--accent); }
+
+.measure {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+  max-width: 36rem;
+  color: var(--text-soft);
+}
+.measure__line {
+  flex: 1;
+  height: 1px;
+  background: var(--accent);
+  position: relative;
+}
+.measure__line::before,
+.measure__line::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 1px;
+  height: 9px;
+  background: var(--accent);
+}
+.measure__line::before { left: 0; }
+.measure__line::after  { right: 0; }
+.measure__label {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.hero__intro {
+  margin: 2.5rem 0 0;
+  max-width: var(--measure);
+  color: var(--text-soft);
+}
+
+/* ==========================================================================
+   7. SEKSJONER
+   ========================================================================== */
+.section { padding-block: clamp(3.5rem, 9vh, 6.5rem); }
+.section--ruled { border-top: 1px solid var(--rule); }
+
+/* ==========================================================================
+   8. PROSJEKTRADER
+   ========================================================================== */
+.work {
+  display: grid;
+  grid-template-columns: 6rem 1fr 2rem;
+  gap: 1.5rem;
+  align-items: start;
+  padding-block: 2.75rem;
+  border-top: 1px solid var(--rule);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.work:last-of-type { border-bottom: 1px solid var(--rule); }
+.work:hover {
+  background: var(--bg-tint);
+  box-shadow: -1rem 0 0 var(--bg-tint), 1rem 0 0 var(--bg-tint);
+}
+.work__year {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  color: var(--text-soft);
+  padding-top: 0.5rem;
+}
+.work__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--size-l);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem;
+  transition: color 0.2s ease;
+}
+.work:hover .work__title { color: var(--accent); }
+.work__outcome {
+  margin: 0 0 1rem;
+  max-width: var(--measure);
+  color: var(--text-soft);
+}
+.work__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.work__tags li {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  color: var(--accent);
+  background: var(--tag-bg);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+}
+.work__arrow {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  padding-top: 0.4rem;
+  justify-self: end;
+  transition: transform 0.2s ease;
+}
+.work:hover .work__arrow { transform: translateX(4px); }
+
+/* ==========================================================================
+   8b. PROSJEKTDETALJER
+   ========================================================================== */
+.case {
+  scroll-margin-top: 5rem;
+  padding-block: clamp(2.5rem, 6vh, 4rem);
+}
+.case:first-of-type { padding-top: 0; }
+.case + .case { border-top: 1px solid var(--rule); }
+.case__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.case__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--size-l);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.case__back {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--text-soft);
+  white-space: nowrap;
+  transition: color 0.18s ease;
+}
+.case__back:hover { color: var(--accent); }
+.case__meta {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: 0.04em;
+  color: var(--text-soft);
+  margin: 0.6rem 0 0;
+}
+.case__lead {
+  margin: 1.5rem 0 0;
+  max-width: var(--measure);
+  color: var(--text-soft);
+}
+.case__sections {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: 2.5rem;
+}
+.case__section { max-width: var(--measure); }
+.case__section h3 {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin: 0 0 0.6rem;
+}
+.case__section p { margin: 0 0 1rem; }
+.case__section p:last-child { margin-bottom: 0; }
+
+/* Bruk case__section--columns når en seksjon er delt i tre (som
+   "Erfaringer som designer") — hvert avsnitt <p> blir da sin egen spalte. */
+.case__section--columns {
+  max-width: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+.case__section--columns h3 { grid-column: 1 / -1; }
+.case__section--columns p { margin: 0; }
+
+/* case__section-row setter to seksjoner (typisk Prosessen og Løsningen)
+   side om side. */
+.case__section-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+.case__section-row .case__section { max-width: none; }
+
+/* case__section--split setter brødteksten i én seksjon i to spalter,
+   som i en avis — overskriften ligger over, spalt over begge. */
+.case__section--split {
+  max-width: none;
+  column-count: 2;
+  column-gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+.case__section--split h3 { column-span: all; }
+.case__section--split p { break-inside: avoid; }
+
+.case__hero {
+  width: 100%;
+  height: clamp(220px, 34vw, 420px);
+  object-fit: cover;
+  border-radius: 3px;
+  margin: 2rem 0 0;
+  display: block;
+  border: 1px solid var(--rule);
+}
+/* Ett bilde mellom to seksjoner — egen naturlig form, ingen bakgrunn.
+   Brede bilder fyller nesten hele bredden; smalere bilder (som en
+   skjermdump) vises i sin egen størrelse og sentreres. */
+.case__figure { margin: 0; text-align: center; }
+.case__figure img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+}
+@media (max-width: 720px) {
+  .case__section--columns { grid-template-columns: 1fr; }
+  .case__section-row { grid-template-columns: 1fr; }
+  .case__section--split { column-count: 1; }
+}
+
+/* ==========================================================================
+   9. OM MEG
+   ========================================================================== */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+.about__text p { margin: 0 0 1.1rem; max-width: var(--measure); }
+
+/* Marina tekst på Baby Blue */
+.skills {
+  background: var(--baby-blue);
+  color: var(--marina);
+  padding: 1.75rem;
+  border-radius: 3px;
+}
+.skills ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.skills li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--marina) 25%, transparent);
+}
+.skills li:first-child { padding-top: 0; }
+.skills li:last-child { padding-bottom: 0; border-bottom: 0; }
+.skills__label {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.skills__value {
+  font-size: var(--size-s);
+  line-height: 1.55;
+  opacity: 0.82;
+}
+
+/* ==========================================================================
+   10. KONTAKT — Sunburned tekst på Kisses, kun i stor grad
+   ========================================================================== */
+.contact {
+  background: var(--loud-bg);
+  color: var(--loud-text);
+}
+.contact .eyebrow { color: var(--loud-text); }
+.contact .eyebrow::before { background: var(--loud-text); }
+.contact__line {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 0.9rem + 3vw, 3.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+.contact__line a {
+  color: var(--loud-text);
+  text-decoration: none;
+  border-bottom: 2px solid color-mix(in srgb, var(--loud-text) 40%, transparent);
+  transition: border-color 0.2s ease;
+}
+.contact__line a:hover { border-color: var(--loud-text); }
+.contact__elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+}
+.contact__elsewhere a { color: var(--loud-text); text-decoration: none; opacity: 0.85; }
+.contact__elsewhere a:hover { opacity: 1; }
+
+.colophon {
+  background: var(--invert-bg);
+  color: var(--invert-text);
+}
+.colophon__inner {
+  padding-block: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   11. SMALE SKJERMER
+   ========================================================================== */
+@media (max-width: 720px) {
+  .work { grid-template-columns: 1fr auto; }
+  .work__year { grid-column: 1 / -1; padding-top: 0; }
+  .about { grid-template-columns: 1fr; }
+  .masthead__nav a[data-optional] { display: none; }
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__portrait-wrap { width: 150px; justify-self: start; order: -1; margin-bottom: 1rem; }
+}
+
+/* ==========================================================================
+   12. BEVEGELSE
+   ========================================================================== */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
+.rise:nth-of-type(1) { animation-delay: 0.05s; }
+.rise:nth-of-type(2) { animation-delay: 0.15s; }
+.rise:nth-of-type(3) { animation-delay: 0.25s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead__inner">
+    <a class="masthead__name" href="#top">Celine Varmann Aamodt</a>
+    <div class="masthead__right">
+      <nav class="masthead__nav">
+        <a href="#om" data-optional><span class="lang-no">Om</span><span class="lang-en">About</span></a>
+        <a href="#arbeid"><span class="lang-no">Arbeid</span><span class="lang-en">Work</span></a>
+        <a href="#kontakt"><span class="lang-no">Kontakt</span><span class="lang-en">Contact</span></a>
+      </nav>
+      <button type="button" class="lang-switch" id="langSwitch">
+        <svg class="lang-switch__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M3 12h18M12 3c2.4 2.6 3.6 5.7 3.6 9s-1.2 6.4-3.6 9c-2.4-2.6-3.6-5.7-3.6-9s1.2-6.4 3.6-9Z"></path>
+        </svg>
+        <span class="lang-switch__option" data-lang="no">NO</span>
+        <span class="lang-switch__divider" aria-hidden="true"></span>
+        <span class="lang-switch__option" data-lang="en">EN</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== HERO ========================================================= -->
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div class="hero__grid">
+        <div>
+          <p class="eyebrow rise">Celine Varmann Aamodt</p>
+          <!-- ENDRE: alt i <em> blir Kisses-farget -->
+          <h1 class="hero__title rise">
+            <span class="lang-no">Det finnes ikke noe bedre enn å lage <em>orden</em> der det er
+              kaos.</span>
+            <span class="lang-en">There is no such thing as creating <em>order</em> where there is chaos.</span>
+          </h1>
+
+          <div class="measure rise">
+            <span class="measure__line"></span>
+            <span class="measure__label">
+              <span class="lang-no">Junior interaksjonsdesigner · Trondheim</span>
+              <span class="lang-en">Junior Interaction Designer · Trondheim</span>
+            </span>
+            <span class="measure__line"></span>
+          </div>
+
+          <p class="hero__intro rise">
+            <span class="lang-no">
+              Erfaring som interaksjonsdesigner i Studentsamskipnaden i Oslo,
+              og ellers bred bakgrunn med designforskning fra masterstudie i Informatikk: design, bruk, og interaksjon ved UiO. 
+            </span>
+            <span class="lang-en">
+              Experience as interaction designer at Studentsamskipnaden i Oslo,
+              and a broad background in design research from a master's degree in Informatics: 
+              design, use, and interaction at the University of Oslo (UiO).
+            </span>
+          </p>
+        </div>
+        <div class="hero__portrait-wrap rise">
+          <div class="hero__portrait">
+            <img src="portfolio-assets/portrait-2.jpg" alt="Portrait of Celine Varmann Aamodt">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OM MEG ======================================================= -->
+  <section class="section section--ruled" id="om">
+    <div class="wrap">
+      <p class="eyebrow">
+        <span class="lang-no">Om meg</span>
+        <span class="lang-en">About me</span>
+      </p>
+      <div class="about">
+        <div class="about__text">
+          <!-- ENDRE: skriv som deg selv. Hva du er nysgjerrig på, hvor du
+               kommer fra faglig, og gjerne én ting som ikke er jobb.      -->
+          <p>
+            <span class="lang-no">
+              Jeg er den personen som gjerne organiserer i krydderskuffen.
+            </span>
+            <span class="lang-en">
+              I am the type of person that willingly organises the spice-drawer.
+            </span>
+          </p>
+          <p>
+            <span class="lang-no">
+              Det finnes ikke noe bedre enn å hjelpe til å lage orden der det
+              er kaos. I en verden hvor vi bruker mer tid på skjerm enn noen
+              gang er det viktig for meg at denne tiden skal være så
+              lystbetont som overhodet mulig.
+            </span>
+            <span class="lang-en">
+              There is no such thing as helping to create order where there
+              is chaos. In a world where we spend so much more time on our screens,
+              I believe it is absolutely necessary to make
+              sure that we at least are feeling good in front of it.
+            </span>
+          </p>
+          <p>
+            <span class="lang-no">
+              Jeg tror dette kjennetegner meg som designer. Jeg
+              prioriterer flyt, slik at brukere kan oppleve mestring.
+              Den eneste måten å få til det på er gjennom deres personlige
+              erfaringer og meninger. 
+            </span>
+            <span class="lang-en">
+              I think that is what defines me as a designer. I want to
+              create flow, so that the users can experience their own
+              competence. The only way to do that is through their 
+              personal experiences and opinions.
+            </span>
+          </p>
+        </div>
+        <div class="skills">
+          <ul>
+            <li>
+              <span class="skills__label"><span class="lang-no">Verktøy</span><span class="lang-en">Tools</span></span>
+              <span class="skills__value"><span class="lang-no">Figma, Miro, DevOps, Div. AI-verktøy</span><span class="lang-en">Figma, Miro, DevOps, Various AI-tools</span></span>
+            </li>
+            <li>
+              <span class="skills__label"><span class="lang-no">Metoder</span><span class="lang-en">Methods</span></span>
+              <span class="skills__value"><span class="lang-no">Intervju, Observasjon, Spørreundersøkelse, Workshop, Prototyping</span><span class="lang-en">Interview, Observation, Surveys, Workshop, Prototyping</span></span>
+            </li>
+            <li>
+              <span class="skills__label"><span class="lang-no">Designtilnærminger</span><span class="lang-en">Design approaches</span></span>
+              <span class="skills__value"><span class="lang-no">Bruksorientert, Brukersentrert, Deltakende, Future oriented, Transformativt, Kritisk</span><span class="lang-en">Use-centered, User-centered, Participatory, Future oriented, Transformative, Critical</span></span>
+            </li>
+            <li>
+              <span class="skills__label"><span class="lang-no">Språk</span><span class="lang-en">Language</span></span>
+              <span class="skills__value"><span class="lang-no">Norsk, Engelsk</span><span class="lang-en">Norwegian, English</span></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARBEID =======================================================
+       ENDRE: kopier hele <a class="work"> ... </a> for å legge til et prosjekt.
+       Skoleprosjekter og gruppeprosjekter teller — skriv hva DU gjorde.
+       ==================================================================== -->
+  <section class="section" id="arbeid">
+    <div class="wrap">
+      <p class="eyebrow">
+        <span class="lang-no">Utvalgt arbeid</span>
+        <span class="lang-en">Selected work</span>
+      </p>
+
+      <a class="work" href="#sio">
+        <span class="work__year">2024-</span>
+        <div>
+          <h2 class="work__title">
+            <span class="lang-no">Studentsamskipnaden i Oslo</span>
+            <span class="lang-en">Studentsamskipnaden i Oslo</span>
+          </h2>
+          <p class="work__outcome">
+            <span class="lang-no">
+              Deltidsstilling som Junior Interaksjonsdesigner ved siden av
+              studiene.
+            </span>
+            <span class="lang-en">
+              A part-time role as Junior Interaction Designer alongside my
+              studies.
+            </span>
+          </p>
+          <ul class="work__tags">
+            <li>Figma</li>
+            <li><span class="lang-no">Designsystem</span><span class="lang-en">Design system</span></li>
+            <li><span class="lang-no">Smidig prosess</span><span class="lang-en">Agile process</span></li>
+          </ul>
+        </div>
+        <span class="work__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a class="work" href="#master">
+        <span class="work__year">2024-2026</span>
+        <div>
+          <h2 class="work__title">
+            <span class="lang-no">Masteroppgave</span>
+            <span class="lang-en">Master's thesis</span>
+          </h2>
+          <p class="work__outcome">
+            <span class="lang-no">
+              Følelser og kollektivtransport, skrevet for forskningsgruppen
+              Teknologi og bærekraftige fremtider.
+            </span>
+            <span class="lang-en">
+              Emotions and public transport, written for the research group
+              Technology and Sustainable Futures.
+            </span>
+          </p>
+          <ul class="work__tags">
+            <li><span class="lang-no">Arbeidshefter</span><span class="lang-en">Booklets</span></li>
+            <li><span class="lang-no">Design for Bærekraft</span><span class="lang-en">Design for Sustainability</span></li>
+            <li><span class="lang-no">Tematisk analyse</span><span class="lang-en">Thematic analysis</span></li>
+          </ul>
+        </div>
+        <span class="work__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a class="work" href="#lydspor">
+        <span class="work__year">2023</span>
+        <div>
+          <h2 class="work__title">
+            <span class="lang-no">Lydspor</span>
+            <span class="lang-en">Lydspor</span>
+          </h2>
+          <p class="work__outcome">
+            <span class="lang-no">
+              Arbeid for Beito Husky Tours og SINTEF som handlet om å hjelpe svaksynte
+              å kjøre hundeslede selv.
+            </span>
+            <span class="lang-en">
+              Work for Beito Husky Tours and SINTEF to help visually impaired guests 
+              drive their own dog sled.
+            </span>
+          </p>
+          <ul class="work__tags">
+            <li><span class="lang-no">Feltarbeid</span><span class="lang-en">Fieldwork</span></li>
+            <li>Customer Journey Map</li>
+            <li>Backcasting</li>
+          </ul>
+        </div>
+        <span class="work__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a class="work" href="#intouch">
+        <span class="work__year">2021</span>
+        <div>
+          <h2 class="work__title">
+            <span class="lang-no">InTouch</span>
+            <span class="lang-en">InTouch</span>
+          </h2>
+          <p class="work__outcome">
+            <span class="lang-no">
+              Et progresjonstre som motiverer nyankomne innvandrere til å delta
+              på språkkafé. 
+            </span>
+            <span class="lang-en">
+              A progress tree that motivates newly arrived immigrants to
+              attend language cafés.
+            </span>
+          </p>
+          <ul class="work__tags">
+            <li>Workshops</li>
+            <li><span class="lang-no">Intervjuer</span><span class="lang-en">Interviews</span></li>
+            <li><span class="lang-no">Feltarbeid</span><span class="lang-en">Fieldwork</span></li>
+          </ul>
+        </div>
+        <span class="work__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== PROSJEKTDETALJER ============================================= -->
+  <section class="section section--ruled" id="prosjekter">
+    <div class="wrap">
+      <p class="eyebrow">
+        <span class="lang-no">Arbeidet i detalj</span>
+        <span class="lang-en">The work in detail</span>
+      </p>
+
+      <article class="case" id="sio">
+        <div class="case__head">
+          <h2 class="case__title">SiO</h2>
+          <a class="case__back" href="#arbeid">
+            <span class="lang-no">↑ Tilbake til arbeid</span>
+            <span class="lang-en">↑ Back to work</span>
+          </a>
+        </div>
+        <p class="case__meta">
+          <span class="lang-no">Deltidsstilling · Junior Interaksjonsdesigner · Studentsamskipnaden i Oslo</span>
+          <span class="lang-en">Part-time role · Junior Interaction Designer · Studentsamskipnaden i Oslo</span>
+        </p>
+        <p class="case__lead">
+          <span class="lang-no">
+            To år som deltidsansatt Junior Interaksjonsdesigner i
+            Studentsamskipnaden i Oslo (SiO) — studentsamskipnaden for 29
+            studiesteder i Oslo og omegn, ved siden av studiene. 
+          </span>
+          <span class="lang-en">
+            Two years as a part-time Junior Interaction Designer at
+            Studentsamskipnaden i Oslo (SiO) — the student welfare
+            organisation for 29 institutions in and around Oslo, alongside my studies.
+          </span>
+        </p>
+        <div class="case__sections">
+          <figure class="case__figure">
+            <img src="portfolio-assets/sio-my-page-review.png" alt="Figma review of the 'My Page' design with annotations on colour contrast and inconsistent naming of the edit profile link">
+          </figure>
+          <div class="case__section">
+            <p>
+              <span class="lang-no">
+                Jeg har jobbet i Studentsamskipnaden i Oslo siden januar 2024. Der
+                har jeg ansvar for forbedring av nettsider basert på brukerinnsikt.
+                Tidligere har jeg vært den eneste designeren i teamet. Arbeidet
+                inkluderer analyser av dagens situasjon og identifisering av nye
+                krav. Deretter har jeg utformet skisser og høyoppløselige
+                prototyper i Figma, som har blitt implementert gjennom samarbeid
+                med utviklere. Erfaringen har lært meg å omsette innsikt til
+                designvalg, og å kommunisere designperspektivet tydelig til resten
+                av teamet.
+              </span>
+              <span class="lang-en">
+                I have worked at Studentsamskipnaden i Oslo (SiO), the student
+                welfare organisation in Oslo, since January 2024. I am responsible
+                for improving the website based on user insights. Previously, I
+                was the only designer on the team. My work involves analysing the
+                current situation and identifying new requirements. I then create
+                sketches and high-fidelity prototypes in Figma, which are
+                implemented in collaboration with developers. This experience has
+                taught me to translate insights into design decisions and
+                communicate the design perspective clearly to the rest of the
+                team.
+              </span>
+            </p>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/sio-signup-form.png" alt="Figma sketch of a sign-up form asking for full name and phone number, with a confirmation popup">
+          </figure>
+          <div class="case__section">
+            <p>
+              <span class="lang-no">
+                I SiO har jeg hatt mange forskjellige arbeidsoppgaver. Blant
+                annet har jeg vært med på å lage en ny innmeldingsside til SiO
+                Athletica. Jeg har også bidratt med diverse short-wins, som for
+                eksempel oppdatering av boligsidene, kartlegging av sidemaler,
+                om-oss siden til SHoT undersøkelsen, og arbeid med
+                fargevariabler til den nye foreningerløsningen. Ellers har
+                jobben gått i løpende oppdateringer og skisser på forespørsel.
+              </span>
+              <span class="lang-en">
+                At SiO, I have worked on a wide range of tasks, for example
+                designing the new sign-up page for SiO Athletica. I have also contributed to several quick
+                wins, such as updating the housing pages, mapping page
+                templates, working on the About Us page for the SHoT survey,
+                and developing colour variables for the new student
+                associations solution. The rest of my work has involved ongoing
+                updates and creating sketches on request.
+              </span>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- PLASSHOLDER: masteroppgaven — teksten er foreløpig og skal skrives om. -->
+      <article class="case" id="master">
+        <div class="case__head">
+          <h2 class="case__title"><span class="lang-no">Masteroppgave</span><span class="lang-en">Master's thesis</span></h2>
+          <a class="case__back" href="#arbeid">
+            <span class="lang-no">↑ Tilbake til arbeid</span>
+            <span class="lang-en">↑ Back to work</span>
+          </a>
+        </div>
+        <p class="case__meta">
+          <span class="lang-no">Masteroppgave · Teknologi og bærekraftige fremtider · UiO · 2024–2026</span>
+          <span class="lang-en">Master's thesis · Technology and Sustainable Futures · UiO · 2024–2026</span>
+        </p>
+        <p class="case__lead">
+          <span class="lang-no">
+            Jeg skrev masteroppgaven min <em>“Emotions in Transit:
+            Exploring emotional experiences of everyday travel
+            through booklets”</em> for forskningsgruppen Teknologi
+            og bærekraftige fremtider ved Universitetet i Oslo.
+            Oppgaven handler om følelser og kollektivtransport, og
+            hvordan vi kan inkludere mer menneskelige hensyn i den
+            digitale verden. Jeg forsøkte å svare på disse to
+            forskningsspørsmålene: 1) Hva er en passene tilnærming
+            for å samle data om følelser og kollektivtransport? og
+            2) Hvilke følelser har folk rundt kollektivtransport?
+          </span>
+          <span class="lang-en">
+            I wrote my master’s thesis, <em>“Emotions in Transit:
+            Exploring emotional experiences of everyday travel
+            through booklets”</em>, for the Technology and
+            Sustainable Futures research group at the University
+            of Oslo. The thesis explores emotions and public
+            transport, and how we can give greater consideration
+            to human experiences in the digital world. I aimed to
+            answer two research questions: 1) What is a suitable
+            approach to collecting data about emotions and public
+            transport? and 2) What emotions do people associate
+            with public transport?
+          </span>
+        </p>
+        <div class="case__sections">
+          <figure class="case__figure">
+            <img src="portfolio-assets/master-booklet-context.png" alt="Booklet page asking participants which feelings and associations they connect to illustrations of a person waiting at a bus stop by day and by night">
+          </figure>
+          <div class="case__section">
+            <p>
+              <span class="lang-no">
+                I masteroppgaven undersøker jeg hvordan
+                følelser former bruken av kollektivtransport i
+                hverdagen, og hvordan designforskningsmetoder
+                bedre kan fange opp disse følelsene innenfor
+                feltet Design for Sustainable Behaviour
+                (DfSB). Etter å ha gjort en
+                litteraturgjennomgang av nåværende forskning
+                innen området <em>følelser, adferd og
+                bærekraft</em>, fant jeg et uutforsket
+                potensiale i å la deltakerne uttrykke seg
+                gjennom andre metoder enn bare intervjuer,
+                spørreundersøkelser og sporing. Derfor
+                benytter min studie seg av arbeidshefter med visuelle oppgaver og collager for å
+                utforske følelser rundt kollektivtransport.
+                Jeg designet og illustrerte
+                heftene i Figma, printet og monterte dem, og leverte dem til deltagerne mine.
+                Deltagerne fikk
+                beholde arbeidsheftet i 2 uker, før jeg hentet
+                dem inn og analyserte dataen.
+              </span>
+              <span class="lang-en">
+                In my master’s thesis, I explore how emotions shape 
+                everyday use of public transport and how design research 
+                methods can better capture these emotions within the field 
+                of Design for Sustainable Behaviour (DfSB). After reviewing 
+                current research on emotions, behaviour, and sustainability, 
+                I identified a gap and untapped potential in allowing participants 
+                to express themselves through methods beyond interviews, 
+                surveys, and tracking. My study therefore uses booklets 
+                with visual activities and collages to explore emotions 
+                related to public transport. I designed and illustrated 
+                the booklets in Figma, printed and assembled them, and gave 
+                them to the participants. They kept the booklet for two 
+                weeks before I collected them and analysed the data.
+              </span>
+            </p>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/master-collage-illustrations.png" alt="Hand-drawn illustrations for the collages: the earth, buildings, cars, a bus, a tram, a train and rain clouds">
+          </figure>
+          <figure class="case__figure">
+            <img src="portfolio-assets/master-analysis.png" alt="Analysis board grouping participant quotes about hope, anger and restlessness under the theme Reliability">
+          </figure>
+          <div class="case__section">
+            <p>
+              <span class="lang-no">
+                Oppgaven argumenterer for at mindre kreative
+                metoder risikerer å overse viktig informasjon
+                om følelser. Mer kreative metoder, slik som
+                arbeidshefter, kan hjelpe deltakere å uttrykke
+                følelser som er vanskelige å sette ord på
+                eller å gjenkjenne følelser som de ikke kommer
+                på i øyeblikket. Samlet sett tyder studien på
+                at deltakerne har mange følelser knyttet til
+                kollektivtransport, og at teorier om følelser
+                og atferd bør få en mer sentral plass i design
+                for bærekraftig adferd.
+              </span>
+              <span class="lang-en">
+                The thesis argues that less creative methods
+                risk overlooking important information about
+                emotions. More creative methods, such as
+                booklets, can help participants express
+                feelings that are difficult to put into words,
+                or recognize feelings they might not think of
+                in the moment. Overall, the study suggests
+                that participants experience many emotions
+                related to public transport, and that theories
+                of emotion and behaviour should play a more
+                central role in design for sustainable
+                behaviour.
+              </span>
+            </p>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/master-booklet-pages.png" alt="Three booklet spreads: circling preferred modes of transport in summer, choosing the public transport that gives the most positive feelings, and writing associations to bus stop illustrations">
+          </figure>
+          <figure class="case__figure">
+            <img src="portfolio-assets/master-participant-collages.png" alt="Collages made by participants, combining photos of traffic and cars, emoji stickers, illustrations and handwritten notes about public transport">
+          </figure>
+        </div>
+      </article>
+
+      <article class="case" id="lydspor">
+        <div class="case__head">
+          <h2 class="case__title">Lydspor</h2>
+          <a class="case__back" href="#arbeid">
+            <span class="lang-no">↑ Tilbake til arbeid</span>
+            <span class="lang-en">↑ Back to work</span>
+          </a>
+        </div>
+        <p class="case__meta">
+          <span class="lang-no">Beito Husky Tours × SINTEF (ACCESSTOUR) · Transformativt design · 2023 </span>
+          <span class="lang-en">Beito Husky Tours × SINTEF (ACCESSTOUR) · Transformative Design · 2023 </span>
+        </p>
+        <p class="case__lead">
+          <span class="lang-no">
+            Et prosjekt i emnet <em>transformativt design</em> ved UiO, i
+            samarbeid med forskningsprosjektet ACCESSTOUR. Målet var å gjøre
+            hundekjøring tilgjengelig for svaksynte, sammen med Beito Husky
+            Tours og SINTEF. Prosjektet fortsatte etter emnet var ferdig
+            sammen med SINTEF. Det resulterte i et bokkapittel i boka
+            <em>Handbook of Accessible Tourism</em>.
+          </span>
+          <span class="lang-en">
+            A project in the UiO course <em>Transformative Design</em>, in
+            collaboration with the research project ACCESSTOUR. The goal was
+            to make dog sledding accessible for people with visual
+            impairments, together with Beito Husky Tours and SINTEF. The
+            project continued after the course ended in collaboration with
+            SINTEF, and resulted in a book chapter in the
+            <em>Handbook of Accessible Tourism</em>.
+          </span>
+        </p>
+        <img class="case__hero" src="portfolio-assets/lydspor-hero.png" alt="A dog sled team of three huskies resting in the snow at Beitostølen, with a musher standing on the sled">
+        <div class="case__sections">
+          <div class="case__section case__section--split">
+            <h3><span class="lang-no">Prosessen og løsningen</span><span class="lang-en">The process and the solution</span></h3>
+            <p>
+              <span class="lang-no">
+                Etter datainnsamling med guider på Beito Husky Tours og
+                mennesker med synsnedsettelser ble følgende krav utarbeidet:
+                løsningen må kunne varsle når man skal bremse, og løsningen
+                må kunne gi informasjon om terreng og omgivelser.
+              </span>
+              <span class="lang-en">
+                After gathering data with guides at Beito Husky Tours and
+                people with visual impairments, we developed the following
+                requirements: the solution must be able to signal when the
+                user should brake, and it must provide information about the
+                terrain and surroundings.
+              </span>
+            </p>
+            <p>
+              <span class="lang-no">
+                Prosjektet skapte flere ulike løsninger med forskjellige
+                formål. Når besøket på Beitostølen fant sted var det
+                markering av slede og hunder som skulle testes. En
+                varselstang som retter seg opp og blir tydeligere jo nærmere
+                den kommer hundene, samt markering av hundene, var en løsning
+                for de med svakere synsnedsettelser.
+              </span>
+              <span class="lang-en">
+                The project produced several different solutions with
+                different purposes. When the visit to Beitostølen took
+                place, we tested marking the sled and the dogs. A warning
+                pole that straightens up and becomes more visible the closer
+                it gets to the dogs, along with markings on the dogs, was one
+                solution for people with milder visual impairments. 
+              </span>
+            </p>
+            <p>
+              <span class="lang-no">
+                I senere iterasjoner ble løsninger for de med sterkere synsnedsettelser designet.
+                Dette inkluderte en sensor i ledetauet som varsler brukeren
+                med haptisk tilbakemelding når det er på tide å bremse. I videre samarbeid med SINTEF ble en applikasjon utviklet.
+                Denne applikasjonen innebar en mulighet for guiden til å
+                legge inn lydklipp på et kart ved hjelp av geomapping.
+                Lydklippene kunne inneholde informasjon om bremsing, lening,
+                og svinging for de som ikke hadde mulighet til å observere
+                dette på egenhånd.
+              </span>
+              <span class="lang-en">
+                In later iterations, we designed solutions for people with more
+                severe visual impairments. This included a sensor in the
+                lead rope that alerts the user with haptic feedback when it
+                is time to brake. In further collaboration with SINTEF, an application was
+                developed. This application enabled the guide to add audio
+                clips to a map using geomapping. The audio clips could
+                contain information about braking, leaning, and turning for
+                people who were not able to observe this on their own.
+              </span>
+            </p>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/lydspor-haptic-solutions.png" alt="Sketches of haptic feedback concepts: a sensor on the tow rope, a vibrating wristband, and a foot pedal indicator">
+          </figure>
+          <figure class="case__figure">
+            <img src="portfolio-assets/lydspor-app-screens.png" alt="Screens from the LydSpor app: the route map, the welcome screen, and login">
+          </figure>
+          <div class="case__section case__section--columns">
+            <h3><span class="lang-no">Hva har jeg lært</span><span class="lang-en">What I learned</span></h3>
+            <p>
+              <span class="lang-no">
+                I prosjektet har vi hatt en transformativ tilnærming til
+                design. Det innebærer å erkjenne behovet for fundamental
+                endring for å håndtere komplekse og sammensatte problemer.
+                Denne tilnærmingen har gitt meg innsikt i hvordan
+                teknologien jeg skaper kan ha en positiv, men også en
+                negativ, påvirkning på fremtiden.
+              </span>
+              <span class="lang-en">
+                In this project, we used a transformative approach to
+                design. This involves recognizing the need for fundamental
+                change in order to address complex and interconnected
+                problems. This approach has given me insight into how
+                the technology I create can have a positive, but also a
+                negative, impact on the future.
+              </span>
+            </p>
+            <p>
+              <span class="lang-no">
+                Gjennom prosjektet har jeg også erfart hvordan holdningen vår
+                og tankesettet vårt kan ha stor påvirkning på hva som
+                identifiseres som et problem og hvordan det kartlegges og
+                løses. Spesielt for dette prosjektet var holdninger rundt
+                temaene universell utforming, svaksynte, hundekjøring og
+                design for bærekraft.
+              </span>
+              <span class="lang-en">
+                I also learned that our attitudes and mindset can strongly
+                influence what is identified as a problem and how it is
+                mapped and solved. In this project, this
+                related to attitudes around topics such as universal
+                design/accessibility, visual impairment, dog sledding, and
+                design for sustainability.
+              </span>
+            </p>
+            <p>
+              <span class="lang-no">
+                Jeg fikk erfaring med å jobbe der det gjelder.
+                Feltarbeidet på Beitostølen muliggjorde testing av prototypene i det 
+                miljøet hvor det endelige produktet skulle implementeres. Det viste 
+                viktigheten av å snakke med mennesker og kjenne på omgivelsene i 
+                den konteksten man designer for. 
+              </span>
+              <span class="lang-en">
+                The project also gave me the opportunity to work hands-on in
+                the real context. This fieldwork made it possible to test the prototypes 
+                in the environment where the final product would be implemented. It showed 
+                how important it is to talk to people and experience the surroundings of the 
+                context you are designing for.
+              </span>
+            </p>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/lydspor-fieldwork.png" alt="Photos from fieldwork at Beitostølen: with the dogs, greeting them before the tour, and a dog team ready on the snow">
+          </figure>
+        </div>
+      </article>
+
+      <article class="case" id="intouch">
+        <div class="case__head">
+          <h2 class="case__title">InTouch</h2>
+          <a class="case__back" href="#arbeid">
+            <span class="lang-no">↑ Tilbake til arbeid</span>
+            <span class="lang-en">↑ Back to work</span>
+          </a>
+        </div>
+        <p class="case__meta">
+          <span class="lang-no">Gruppeprosjekt · Bruksorientert design · 2021</span>
+          <span class="lang-en">Group project · User-Oriented Design · 2021</span>
+        </p>
+        <p class="case__lead">
+          <span class="lang-no">
+            Et prosjekt i emnet ‘Bruksorientert design’ ved Universitetet i
+            Oslo. Det overordnede temaet for prosjektet er interaksjon uten
+            skjerm. Oppdraget dette året var å lage en løsning som ville være
+            en hjelp mot følelse av isolasjon.
+          </span>
+          <span class="lang-en">
+            A project in the University of Oslo course ‘Use-Oriented Design’.
+            The overall theme was screenless interaction, and our brief that
+            year was to create a solution that could help reduce feelings of
+            isolation.
+          </span>
+        </p>
+        <img class="case__hero" src="portfolio-assets/intouch-hero.jpg" alt="Close-up of the wooden progress tree with glowing leaves">
+        <div class="case__sections">
+          <div class="case__section-row">
+            <div class="case__section">
+              <h3><span class="lang-no">Løsningen</span><span class="lang-en">The solution</span></h3>
+              <p>
+                <span class="lang-no">
+                  Løsningen ble et progresjonstre som skulle motivere nye
+                  innbyggere til å dra på språkkafé. Brukeren tar med seg et
+                  blad fra treet til språkkaféen, og scanner det der. Bladet registrerer brukeren som oppmøtt. I tillegg vil det
+                  scannede bladet som settes tilbake i treet lyse. Et
+                  progresjonstre fylt med lysende blader vil gi en premie ved
+                  neste tur til språkkaféen.
+                </span>
+                <span class="lang-en">
+                  We designed a progress tree that would motivate new residents
+                  to attend a language café. The user would bring a leaf from
+                  the tree to the café and scan it there. Scanning the leaf
+                  both registered attendance and made the leaf light up when it
+                  was returned to the tree. As more leaves lit up, the tree
+                  visually showed collective progress, and a fully lit tree
+                  would unlock a reward on the next visit to the language café.
+                </span>
+              </p>
+            </div>
+            <div class="case__section">
+              <h3><span class="lang-no">Prosessen</span><span class="lang-en">The process</span></h3>
+              <p>
+                <span class="lang-no">
+                  Brukernes behov ble identifisert gjennom intervjuer som ble
+                  transkribert og kodet. Flere lav-nivå prototyper ble både
+                  skissert og produsert. Etter hver runde med prototyping ble
+                  det holdt en evaluering sammen med brukerne. Til slutt ble
+                  den endelige løsningen utformet til en høyoppløselig
+                  prototype.
+                </span>
+                <span class="lang-en">
+                  We identified user needs through interviews, which were
+                  transcribed and coded. We created multiple low-fidelity
+                  prototypes through sketching and making, and after each
+                  prototyping round we evaluated the concepts together with
+                  users. In the end, we developed the final concept into a
+                  high-fidelity prototype.
+                </span>
+              </p>
+            </div>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/intouch-solution-flow.png" alt="Illustration in two steps: scanning the leaf at the language café, and the leaf lighting up when placed back on the tree at home">
+          </figure>
+          <figure class="case__figure">
+            <img src="portfolio-assets/intouch-build-process.png" alt="Building the low-fidelity prototype: cutting the wooden tree shape, drilling the mounting board, and testing a wrist-worn interaction">
+          </figure>
+          <div class="case__section case__section--columns">
+            <h3><span class="lang-no">Erfaringer som designer</span><span class="lang-en">What I learned as a designer</span></h3>
+            <p>
+              <span class="lang-no">
+                En bruksorientert designtilnærming lærte oss hvordan brukerne
+                kan være involvert i alle deler av designprosessen, fra
+                datainnsamling og prototyping til evaluering. På denne måten
+                kan man designe noe som faktisk passer inn i brukeres
+                hverdag.
+              </span>
+              <span class="lang-en">
+                Using a use-centered design approach showed how users can be
+                involved throughout the entire design process, from research
+                and prototyping to evaluation. This leads to solutions that
+                better fit into people's everyday lives.
+              </span>
+            </p>
+            <p>
+              <span class="lang-no">
+                Prosjektet fant sted under covid-19 pandemien, og
+                prosjektgruppen møttes kun et par ganger fysisk. Dette gjorde
+                at vi lærte oss å samarbeide digitalt gjennom verktøy som
+                Google Drive, Miro og Zoom.
+              </span>
+              <span class="lang-en">
+                Because the project took place during the COVID-19 pandemic,
+                the team only met in person a few times. This pushed us to
+                collaborate digitally using tools such as Google Drive, Miro,
+                and Zoom.
+              </span>
+            </p>
+            <p>
+              <span class="lang-no">
+                Prosjektet viste verdien av å følge en iterativ prosess med
+                datainnsamling, analyse, prototyping og evaluering. For hver
+                iterasjon kunne designet forkastes eller forbedres. Dette
+                tvang prosjektgruppen til å evaluere hvert designforslag og
+                forhindret en eventuell fastlåsning tidlig i prosessen.
+              </span>
+              <span class="lang-en">
+                Overall, the project reinforced the value of an iterative
+                process of research, analysis, prototyping, and testing. Each
+                iteration allowed us to reject or refine ideas, which helped
+                prevent the team from locking onto a concept too early.
+              </span>
+            </p>
+          </div>
+          <figure class="case__figure">
+            <img src="portfolio-assets/intouch-leaf-token.png" alt="Close-up of the leaf token, and a hand placing it into the reader box with a lit indicator">
+          </figure>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== KONTAKT ====================================================== -->
+  <section class="section contact" id="kontakt">
+    <div class="wrap">
+      <p class="eyebrow">
+        <span class="lang-no">Kontakt</span>
+        <span class="lang-en">Contact</span>
+      </p>
+      <p class="contact__line">
+        <span class="lang-no"> Ta kontakt med meg på e-post: </span>
+        <span class="lang-en"> Contact me through e-mail:</span>
+        <br>
+        <a href="mailto:celinevaa@gmail.com">celinevaa@gmail.com</a>
+      </p>
+      <div class="contact__elsewhere">
+        <a href="https://www.linkedin.com/in/celine-varmann-aamodt" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="colophon">
+  <div class="wrap colophon__inner">
+    <span>© 2026 Celine Varmann Aamodt</span>
+    <span>Bricolage Grotesque · Instrument Sans · JetBrains Mono</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var LANG_KEY = "portfolio-lang";
+  var root = document.documentElement;
+  var langSwitch = document.getElementById("langSwitch");
+  var metaDescription = document.querySelector('meta[name="description"]');
+
+  var titles = {
+    no: "Celine Varmann Aamodt — Interaksjonsdesigner",
+    en: "Celine Varmann Aamodt — Interaction Designer"
+  };
+  var descriptions = {
+    no: "Junior interaksjonsdesigner i Trondheim. Jeg lager orden i det som føles kaotisk.",
+    en: "Junior interaction designer in Trondheim. I create order out of what feels chaotic."
+  };
+  var switchLabels = {
+    no: "Switch to English",
+    en: "Bytt til norsk"
+  };
+
+  function otherLang(lang) { return lang === "no" ? "en" : "no"; }
+
+  function setLang(lang) {
+    if (lang !== "no" && lang !== "en") lang = "no";
+
+    root.setAttribute("lang", lang);
+
+    document.title = titles[lang];
+    if (metaDescription) metaDescription.setAttribute("content", descriptions[lang]);
+    if (langSwitch) langSwitch.setAttribute("aria-label", switchLabels[lang]);
+
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  }
+
+  if (langSwitch) {
+    langSwitch.addEventListener("click", function () {
+      setLang(otherLang(root.getAttribute("lang")));
+    });
+  }
+
+  var saved = null;
+  try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
+  setLang(saved || root.getAttribute("lang") || "no");
+})();
+</script>
+
+</body>
+</html>
